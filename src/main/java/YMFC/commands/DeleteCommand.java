@@ -17,6 +17,5 @@ public class DeleteCommand extends Command{
         String recipeName = recipes.getRecipe(index).getName();
         recipes.removeRecipe(index);
         ui.printDeletedTask(recipeName, recipes.getCounter());
-    };
-
+    }
 }

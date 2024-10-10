@@ -18,8 +18,6 @@ public abstract class Command {
         return isBye;
     }
 
-
     public void execute(RecipeList recipes, Ui ui) {
-
     }
 }

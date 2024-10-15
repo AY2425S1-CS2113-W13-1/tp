@@ -7,6 +7,7 @@ import ymfc.ui.Ui;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -41,7 +42,7 @@ public class AddRecipeCommandTest {
     }
 
     @Test
-    void testAddNewRecipe() {
+    void testAddNewRecipe() throws IOException {
         addRecipeCommand.execute(emptyList, ui, storage);
 
         assertEquals(1, emptyList.getCounter());

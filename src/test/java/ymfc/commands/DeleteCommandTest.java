@@ -1,5 +1,6 @@
 package ymfc.commands;
 
+import ymfc.exception.InvalidArgumentException;
 import ymfc.recipe.Recipe;
 import ymfc.recipelist.RecipeList;
 import ymfc.storage.Storage;
@@ -55,7 +56,7 @@ public class DeleteCommandTest {
     }
 
     @Test
-    void testDeleteRecipe() {
+    void testDeleteRecipe() throws InvalidArgumentException {
         // Assertions to verify that list was created as expected
         assertEquals(2, recipeList.getCounter());
 

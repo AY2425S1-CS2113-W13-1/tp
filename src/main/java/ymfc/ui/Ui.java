@@ -79,6 +79,10 @@ public class Ui {
         System.out.println(line);
     }
 
+    public void printErrorMessage(String error) {
+        System.out.println(error);
+    }
+
     /**
      * Display a newly added recipe.
      *

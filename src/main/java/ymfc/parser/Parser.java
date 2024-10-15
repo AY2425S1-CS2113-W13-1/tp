@@ -54,7 +54,7 @@ public final class Parser {
         case "bye":
             return new ByeCommand();
         default:
-            throw new InvalidCommandException("Invalid command: " + command);
+            throw new InvalidCommandException("Invalid command: " + command + "\ntype \"help\" for assistance");
         }
     }
 
@@ -74,7 +74,7 @@ public final class Parser {
      * @throws InvalidArgumentException If invalid format of arguments is found
      */
     private static AddRecipeCommand getAddRecipeCommand(String args) throws InvalidArgumentException {
-        final Pattern ADD_RECIPE_COMMAND_FORMAT =
+        final Pattern addRecipeCommandFormat =
                 // <n or N>/<String without forward slash>
                 Pattern.compile("(?<name>[nN]/[^/]+)"
                         // (<at least 1 whitespace><i or I>/<String without forward slash>) at least once
@@ -82,9 +82,9 @@ public final class Parser {
                         // (<at least 1 whitespace><s or S><Number>/<String without forward slash>) at least once
                         + "(?<steps>(\\s+[sS][0-9]+/[^/]+)+)");
         args = args.trim();
-        Matcher m = ADD_RECIPE_COMMAND_FORMAT.matcher(args);
+        Matcher m = addRecipeCommandFormat.matcher(args);
         if (!m.matches()) {
-            throw new InvalidArgumentException("Invalid argument(s): " + args);
+            throw new InvalidArgumentException("Invalid argument(s): " + args + "\n" + AddRecipeCommand.USAGE_EXAMPLE);
         }
 
         String name = m.group("name").trim().substring(2); // n/ or N/ are 2 chars
@@ -106,12 +106,12 @@ public final class Parser {
      * @throws InvalidArgumentException If invalid format of arguments is found
      */
     private static DeleteCommand getDeleteCommand(String args) throws InvalidArgumentException {
-        final Pattern DELETE_COMMAND_FORMAT =
+        final Pattern deleteCommandFormat  =
                 Pattern.compile("(?<name>[nN]/[^/]+)");
         args = args.trim();
-        Matcher m = DELETE_COMMAND_FORMAT.matcher(args);
+        Matcher m = deleteCommandFormat .matcher(args);
         if (!m.matches()) {
-            throw new InvalidArgumentException("Invalid argument(s): " + args);
+            throw new InvalidArgumentException("Invalid argument(s): " + args + "\n" + DeleteCommand.USAGE_EXAMPLE);
         }
         String name = m.group("name").trim().substring(2);
         // return new DeleteCommand(0);

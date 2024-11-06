@@ -21,7 +21,7 @@
   - [Adding a New Ingredient](#adding-a-new-ingredient)
   - [Listing out Existing Ingredients](#listing-out-existing-ingredients)
 - [FAQ](#faq)
-- [YMFC.Command Summary](#ymfccommand-summary)
+- [YMFC\.Command Summary](#ymfccommand-summary)
 ----------------------------------
 
 ## Introduction
@@ -306,7 +306,7 @@ and paste it in your other computer in the same directory where YMFC.jar is loca
 
 **A**: Yes, but you must ensure that the format of how recipes and ingredients are saved is followed.
 
-## YMFC.Command Summary
+## YMFC\.Command Summary
 
 | Command                                                         | Usage                                                                                                   |
 |-----------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|

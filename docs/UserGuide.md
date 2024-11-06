@@ -21,7 +21,7 @@
   - [Adding a New Ingredient](#adding-a-new-ingredient)
   - [Listing out Existing Ingredients](#listing-out-existing-ingredients)
 - [FAQ](#faq)
-  - [YMFC.Command Summary](#ymfccommand-summary-1)
+- [YMFC.Command Summary](#ymfccommand-summary-1)
 ----------------------------------
 ## Introduction
 

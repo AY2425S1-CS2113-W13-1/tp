@@ -23,6 +23,7 @@
 - [FAQ](#faq)
 - [YMFC.Command Summary](#ymfccommand-summary-1)
 ----------------------------------
+
 ## Introduction
 
 Your Mother's Favourite Cookbook (YMFC) is a desktop app for managing recipes, designed for use through the

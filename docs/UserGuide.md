@@ -22,6 +22,7 @@
   - [Listing out Existing Ingredients](#listing-out-existing-ingredients)
 - [FAQ](#faq)
 - [YMFC\.Command Summary](#ymfccommand-summary)
+
 ----------------------------------
 
 ## Introduction

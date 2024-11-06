@@ -1,17 +1,20 @@
 package ymfc.parser;
 
 import ymfc.commands.Command;
-import ymfc.commands.AddRecipeCommand;
-import ymfc.commands.AddIngredientCommand;
-import ymfc.commands.ByeCommand;
 import ymfc.commands.DeleteCommand;
+import ymfc.commands.DeleteIngredientCommand;
+import ymfc.commands.ListCommand;
+import ymfc.commands.AddIngredientCommand;
+import ymfc.commands.SortCommand;
+import ymfc.commands.ByeCommand;
+import ymfc.commands.HelpCommand;
 import ymfc.commands.EditCommand;
 import ymfc.commands.FindCommand;
-import ymfc.commands.HelpCommand;
-import ymfc.commands.ListCommand;
+import ymfc.commands.AddRecipeCommand;
 import ymfc.commands.ListIngredientsCommand;
-import ymfc.commands.SortCommand;
 import ymfc.commands.FindIngredCommand;
+import ymfc.commands.RandomCommand;
+import ymfc.commands.RecommendCommand;
 
 import ymfc.exception.EmptyListException;
 import ymfc.exception.InvalidArgumentException;
@@ -24,9 +27,12 @@ import ymfc.recipe.Recipe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.HashSet;
 
 /**
  * Parse user input commands
@@ -63,12 +69,20 @@ public final class Parser {
                 throw new EmptyListException("You can't remove something from nothing!");
             }
             return getDeleteCommand(args);
+        case "deleteI":
+            if (numIngredients <= 0) {
+                throw new EmptyListException("You can't remove something from nothing!");
+            }
+            return getDeleteIngredientCommand(args);
         case "listR":
             if (numRecipes <= 0) {
                 throw new EmptyListException("Your recipe list is empty!");
             }
             return new ListCommand();
         case "listI":
+            if (numIngredients <= 0) {
+                throw new EmptyListException("Your ingredient list is empty!");
+            }
             return new ListIngredientsCommand();
         case "help":
             return new HelpCommand();
@@ -96,6 +110,16 @@ public final class Parser {
                 throw new EmptyListException("There are no ingredients to find!");
             }
             return getFindIngredCommand(args);
+        case "random":
+            if (numRecipes <= 0) {
+                throw new EmptyListException("A random recipe from a pool of nothing, is nothing.");
+            }
+            return new RandomCommand();
+        case "recommend":
+            if (numRecipes <= 0) {
+                throw new EmptyListException("I don't have any recipes, what do you want me to recommend?");
+            }
+            return new RecommendCommand();
         default:
             throw new InvalidCommandException("Invalid command: " + command + "\ntype \"help\" for assistance");
         }
@@ -111,7 +135,8 @@ public final class Parser {
         }
 
         String name = m.group("name").trim().substring(2); // n/ or N/ are 2 chars
-        return new AddIngredientCommand(new Ingredient(name));
+        String trimmedName = name.trim();
+        return new AddIngredientCommand(new Ingredient(trimmedName));
     }
 
     /**
@@ -132,7 +157,7 @@ public final class Parser {
                         // Match optional cuisine: c/ or C/ followed by any characters except '/'
                         + "(\\s+(?<cuisine>[cC]/[^/]+))?"
                         // Match optional time taken: t/ or T/ followed by digits
-                        + "(\\s+(?<time>[tT]/[0-9]+))?");
+                        + "(\\s+(?<time>[tT]/\\s*[0-9]+))?");
 
         String input = args.trim();
         Matcher m = addRecipeCommandFormat.matcher(input);
@@ -141,19 +166,35 @@ public final class Parser {
         }
 
         String name = m.group("name").trim().substring(2); // n/ or N/ are 2 chars
+        String trimmedName = name.trim();
         String ingredString = m.group("ingreds");
         String stepString = m.group("steps");
-        ArrayList<String> ingreds = Arrays.stream(ingredString.split("\\s+[iI]/"))
+        ArrayList<Ingredient> ingreds = Arrays.stream(ingredString.split("\\s+[iI]/"))
+                .map(String::trim)
                 .filter(s -> !s.isEmpty())
+                .map(Ingredient::new)
                 .collect(Collectors.toCollection(ArrayList::new));
         ArrayList<String> steps = Arrays.stream(stepString.split("\\s+[sS][0-9]+/"))
+                .map(String::trim)
                 .filter(s -> !s.isEmpty())
                 .collect(Collectors.toCollection(ArrayList::new));
 
-        String cuisine = m.group("cuisine") != null ? m.group("cuisine").trim().substring(2) : null;
+        // Extract step identifiers (s1, s2, ...) and validate for duplicates or missing numbers
+        List<String> stepIdentifiers = Arrays.stream(stepString.split("\\s+"))
+                .filter(step -> step.matches("[sS][0-9]+/.*")) // Ensure the string matches the step format
+                .map(step -> step.split("/")[0]) // Extracts "s1", "s2", etc.
+                .toList();
+
+        validateStepNumbers(stepIdentifiers); // Check for missing/duplicate numbers
+
+        String cuisineInput = m.group("cuisine");
+        String cuisine = null;
+        if (cuisineInput != null) {
+            cuisine = cuisineInput.trim().substring(2).trim();
+        }
         Integer timeTaken = getTimeTakenInteger(m);
 
-        return new AddRecipeCommand(new Recipe(name, ingreds, steps, cuisine, timeTaken));
+        return new AddRecipeCommand(new Recipe(trimmedName, ingreds, steps, cuisine, timeTaken));
     }
 
     private static Integer getTimeTakenInteger(Matcher m) throws InvalidArgumentException {
@@ -163,7 +204,7 @@ public final class Parser {
 
         if (timeTakenString != null) {
             try {
-                timeTaken = Integer.parseInt(timeTakenString.trim().substring(2));
+                timeTaken = Integer.parseInt(timeTakenString.trim().substring(2).trim());
                 if (timeTaken <= 0) {
                     throw new InvalidArgumentException("Invalid time: " + timeTakenString);
                 }
@@ -190,6 +231,19 @@ public final class Parser {
         }
         String name = m.group("name").trim().substring(2);
         return new DeleteCommand(name);
+    }
+
+    private static DeleteIngredientCommand getDeleteIngredientCommand(String args) throws InvalidArgumentException {
+        final Pattern deleteIngredientCommandFormat =
+                Pattern.compile("(?<name>[nN]/[^/]+)");
+        String input = args.trim();
+        Matcher m = deleteIngredientCommandFormat.matcher(input);
+        if (!m.matches()) {
+            throw new InvalidArgumentException("Invalid argument(s): " + input + "\n"
+                    + DeleteIngredientCommand.USAGE_EXAMPLE);
+        }
+        String name = m.group("name").trim().substring(2);
+        return new DeleteIngredientCommand(name);
     }
 
     private static SortCommand getSortCommand(String args) throws InvalidArgumentException {
@@ -226,7 +280,7 @@ public final class Parser {
                         // Match optional cuisine: c/ or C/ followed by any characters except '/'
                         + "(\\s+(?<cuisine>[cC]/[^/]+))?"
                         // Match optional time taken: t/ or T/ followed by digits
-                        + "(\\s+(?<time>[tT]/[0-9]+))?");
+                        + "(\\s+(?<time>[tT]/\\s*[0-9]+))?");
 
         String input = args.trim();
         Matcher m = editCommandFormat.matcher(input);
@@ -237,18 +291,24 @@ public final class Parser {
         String name = m.group("name").trim().substring(2); // e/ or E/ are 2 chars
         String ingredString = m.group("ingreds");
         String stepString = m.group("steps");
-        ArrayList<String> ingreds = Arrays.stream(ingredString.split("\\s+[iI]/"))
+        ArrayList<Ingredient> ingreds = Arrays.stream(ingredString.split("\\s+[iI]/"))
+                .map(String::trim)
                 .filter(s -> !s.isEmpty())
+                .map(Ingredient::new)
                 .collect(Collectors.toCollection(ArrayList::new));
         ArrayList<String> steps = Arrays.stream(stepString.split("\\s+[sS][0-9]+/"))
+                .map(String::trim)
                 .filter(s -> !s.isEmpty())
                 .collect(Collectors.toCollection(ArrayList::new));
 
-        String cuisine = m.group("cuisine") != null ? m.group("cuisine").trim().substring(2) : null;
+        String cuisineInput = m.group("cuisine");
+        String cuisine = null;
+        if (cuisineInput != null) {
+            cuisine = cuisineInput.trim().substring(2).trim();
+        }
         Integer timeTaken = getTimeTakenInteger(m);
 
         return new EditCommand(new Recipe(name, ingreds, steps, cuisine, timeTaken));
-
     }
 
     private static Command getFindCommand(String args) throws InvalidArgumentException {
@@ -270,11 +330,20 @@ public final class Parser {
             return new FindCommand(query); // Default case, no option provided
         }
 
-        options = options.trim();
+        String trimmedOptions = options.trim();
+        int nCount = countCharOccurrence(trimmedOptions, "[^nN]");
+        int iCount = countCharOccurrence(trimmedOptions, "[^iI]");
+        int sCount = countCharOccurrence(trimmedOptions, "[^sS]");
+        if (nCount > 1 | iCount > 1 | sCount > 1) {
+            throw new InvalidArgumentException("Invalid argument(s): " + input + "\n" +
+                    "At most ONE character for each option is allowed!" + "\n" +
+                    FindCommand.USAGE_EXAMPLE);
+        }
+
         return new FindCommand(query,
-                options.contains("n") | options.contains("n"),
-                options.contains("i") | options.contains("I"),
-                options.contains("s") | options.contains("S")
+                nCount == 1, // Can only be 1 or 0
+                iCount == 1,
+                sCount == 1
         );
     }
 
@@ -292,5 +361,35 @@ public final class Parser {
         return new FindIngredCommand(query); // No options, only the query is needed
     }
 
+    private static int countCharOccurrence(String options, String regex) {
+        return options.replaceAll(regex, "").length();
+    }
+
+    public static void validateStepNumbers(List<String> stepStrings) throws InvalidArgumentException {
+        Set<Integer> stepNumbers = new HashSet<>();
+        int maxStepNumber = 0;
+
+        for (String step : stepStrings) {
+            // Extract the step number (e.g., "s1" -> 1)
+            try {
+                int stepNumber = Integer.parseInt(step.split("/")[0].substring(1));
+                if (!stepNumbers.add(stepNumber)) {
+                    throw new InvalidArgumentException("Duplicate step number found: s" + stepNumber
+                            + "\nLearn to count!");
+                }
+                maxStepNumber = Math.max(maxStepNumber, stepNumber);
+            } catch (NumberFormatException | ArrayIndexOutOfBoundsException exception) {
+                throw new InvalidArgumentException("Invalid step format. Expected format: s1, s2, ...");
+            }
+        }
+
+        // Check for missing numbers in the range 1 to maxStepNumber
+        for (int i = 1; i <= maxStepNumber; i++) {
+            if (!stepNumbers.contains(i)) {
+                throw new InvalidArgumentException("Missing step number: s" + i
+                        + "\nLearn to count!");
+            }
+        }
+    }
 
 }

@@ -9,6 +9,7 @@ import ymfc.commands.AddRecipeCommand;
 import ymfc.exception.InvalidArgumentException;
 import ymfc.exception.EmptyListException;
 import ymfc.exception.InvalidCommandException;
+import ymfc.ingredient.Ingredient;
 import ymfc.list.IngredientList;
 import ymfc.recipe.Recipe;
 import ymfc.list.RecipeList;
@@ -31,7 +32,11 @@ class ParserTest {
         return Stream.of(
                 arguments( // Universal test #1
                         new Recipe("Ramen Eggs",
-                                new ArrayList<>(Arrays.asList("eggs", "soya sauce", "water")),
+                                new ArrayList<>(Arrays.asList(
+                                        new Ingredient("eggs"),
+                                        new Ingredient("soya sauce"),
+                                        new Ingredient("water")
+                                )),
                                 new ArrayList<>(Arrays.asList("boil eggs for 6.5 min", "cool eggs in ice bath"))
                         ), "add n/Ramen Eggs" +
                                 " i/eggs i/soya sauce i/water" +
@@ -40,7 +45,11 @@ class ParserTest {
 
                 arguments( // Universal test #2
                         new Recipe("Grilled Cheese Sandwhich",
-                                new ArrayList<>(Arrays.asList("bread", "cheese slice", "butter")),
+                                new ArrayList<>(Arrays.asList(
+                                        new Ingredient("bread"),
+                                        new Ingredient("cheese slice"),
+                                        new Ingredient("butter")
+                                )),
                                 new ArrayList<>(Arrays.asList("heat pan with butter",
                                         "grill bread on pan, and add cheese on top",
                                         "remove from grill after 3 minutes"))
@@ -53,7 +62,11 @@ class ParserTest {
 
                 arguments( // Ingredients with numbers
                         new Recipe("Spicy Wings",
-                                new ArrayList<>(Arrays.asList("chicken wings 5pcs", "5 tbsp hot sauce", "butter")),
+                                new ArrayList<>(Arrays.asList(
+                                        new Ingredient("chicken wings 5pcs"),
+                                        new Ingredient("5 tbsp hot sauce"),
+                                        new Ingredient("butter")
+                                )),
                                 new ArrayList<>(Arrays.asList("mix ingredients"))
                         ),
                         "add n/Spicy Wings i/chicken wings 5pcs i/5 tbsp hot sauce i/butter s1/mix ingredients"
@@ -61,7 +74,10 @@ class ParserTest {
 
                 arguments( // Steps with punctuation
                         new Recipe("Baked Fish",
-                                new ArrayList<>(Arrays.asList("fish fillet", "lemon")),
+                                new ArrayList<>(Arrays.asList(
+                                        new Ingredient("fish fillet"),
+                                        new Ingredient("lemon")
+                                )),
                                 new ArrayList<>(Arrays.asList("season fish, then bake.", "serve hot."))
                         ),
                         "add n/Baked Fish i/fish fillet i/lemon s1/season fish, then bake. s2/serve hot."
@@ -69,7 +85,11 @@ class ParserTest {
 
                 arguments( // Ingredients with punctuation
                         new Recipe("Mixed Veggies",
-                                new ArrayList<>(Arrays.asList("carrots, chopped", "broccoli", "salt")),
+                                new ArrayList<>(Arrays.asList(
+                                        new Ingredient("carrots, chopped"),
+                                        new Ingredient("broccoli"),
+                                        new Ingredient("salt")
+                                )),
                                 new ArrayList<>(Arrays.asList("cook veggies"))
                         ),
                         "add n/Mixed Veggies i/carrots, chopped i/broccoli i/salt s1/cook veggies"
@@ -77,7 +97,10 @@ class ParserTest {
 
                 arguments( // Special characters in the name
                         new Recipe("Fish & Chips",
-                                new ArrayList<>(Arrays.asList("fish", "potatoes")),
+                                new ArrayList<>(Arrays.asList(
+                                        new Ingredient("fish"),
+                                        new Ingredient("potatoes")
+                                )),
                                 new ArrayList<>(Arrays.asList("fry fish and chips"))
                         ),
                         "add n/Fish & Chips i/fish i/potatoes s1/fry fish and chips"
@@ -85,7 +108,11 @@ class ParserTest {
 
                 arguments( // Recipe with cuisine and time
                         new Recipe("Spicy Wings",
-                                new ArrayList<>(Arrays.asList("chicken wings 5pcs", "5 tbsp hot sauce", "butter")),
+                                new ArrayList<>(Arrays.asList(
+                                        new Ingredient("chicken wings 5pcs"),
+                                        new Ingredient("5 tbsp hot sauce"),
+                                        new Ingredient("butter")
+                                )),
                                 new ArrayList<>(Arrays.asList("mix ingredients")),
                                 "Asian", 15
                         ),
@@ -95,7 +122,10 @@ class ParserTest {
 
                 arguments( // Recipe with cuisine
                         new Recipe("Niku udon",
-                                new ArrayList<>(Arrays.asList("udon noodle", "bonito flakes")),
+                                new ArrayList<>(Arrays.asList(
+                                        new Ingredient("udon noodle"),
+                                        new Ingredient("bonito flakes")
+                                )),
                                 new ArrayList<>(Arrays.asList("add bonito flakes to boiling water",
                                         "boil for 12 minutes", "add cooked noodles and serve")),
                                 "Japanese"
@@ -106,7 +136,12 @@ class ParserTest {
 
                 arguments( // Recipe with time
                         new Recipe("Carbonara",
-                                new ArrayList<>(Arrays.asList("spaghetti", "eggs", "parmesan cheese", "pancetta")),
+                                new ArrayList<>(Arrays.asList(
+                                        new Ingredient("spaghetti"),
+                                        new Ingredient("eggs"),
+                                        new Ingredient("parmesan cheese"),
+                                        new Ingredient("pancetta")
+                                )),
                                 new ArrayList<>(Arrays.asList("boil spaghetti",
                                         "whisk eggs and cheese together",
                                         "fry pancetta until crispy",
@@ -187,8 +222,8 @@ class ParserTest {
         RecipeList recipes = new RecipeList();
         IngredientList ingredients = new IngredientList();
 
-        ArrayList<String> pastaIngredients = new ArrayList<>();
-        pastaIngredients.add("Pasta");
+        ArrayList<Ingredient> pastaIngredients = new ArrayList<>();
+        pastaIngredients.add(new Ingredient("Pasta"));
         ArrayList<String> pastaSteps = new ArrayList<>();
         pastaSteps.add("Boil pasta in water.");
 

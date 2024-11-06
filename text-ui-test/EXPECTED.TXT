@@ -41,6 +41,7 @@ The following commands is for working with your recipes list
 The following commands is for working with your ingredients list
 1. new n/ingredient                  - Add a new ingredient to your list
 2. listI                             - Lists out all your current ingredients
+3. findI ingredient                  - Looks for your ingredient in your ingredients list
 	__________________________________________________________________________________
 Got it? Let's get back to cooking.
 
@@ -48,51 +49,50 @@ Got it? Let's get back to cooking.
 	__________________________________________________________________________________
 	Okie dokie, one more recipe for me:
 	 Recipe: grilled cheese sandwich
-  Ingredients: 
-    - eggs
-    - sandwich
-    - cheese
-    - butter
-  Steps: 
-    1. add butter to hot pan
-    2. etc
+	  Ingredients: 
+	    - eggs
+	    - sandwich
+	    - cheese
+	    - butter
+	  Steps: 
+	    1. add butter to hot pan
+	    2. etc
 	You currently have 1 recipe in your list.
 	__________________________________________________________________________________
 	__________________________________________________________________________________
 	Okie dokie, one more recipe for me:
 	 Recipe: ramen eggs
-  Ingredients: 
-    - eggs
-    - soya sauce
-  Steps: 
-    1. boil eggs for 6.5 min
-    2. cool eggs in ice bath
-  Cuisine: Japanese
-  Time taken: 15
+	  Ingredients: 
+	    - eggs
+	    - soya sauce
+	  Steps: 
+	    1. boil eggs for 6.5 min
+	    2. cool eggs in ice bath
+	  Cuisine: Japanese
+	  Time taken: 15
 	You currently have 2 recipes in your list.
 	__________________________________________________________________________________
 	__________________________________________________________________________________
 	Here's everything in my collection so far:
-1.Recipe: grilled cheese sandwich
-  Ingredients: 
-    - eggs
-    - sandwich
-    - cheese
-    - butter
-  Steps: 
-    1. add butter to hot pan
-    2. etc
+	1. Recipe: grilled cheese sandwich
+	  Ingredients: 
+	    - eggs
+	    - sandwich
+	    - cheese
+	    - butter
+	  Steps: 
+	    1. add butter to hot pan
+	    2. etc
 	__________________________________________________________________________________
-2.Recipe: ramen eggs
-  Ingredients: 
-    - eggs
-    - soya sauce
-  Steps: 
-    1. boil eggs for 6.5 min
-    2. cool eggs in ice bath
-  Cuisine: Japanese
-  Time taken: 15
-	__________________________________________________________________________________
+	2. Recipe: ramen eggs
+	  Ingredients: 
+	    - eggs
+	    - soya sauce
+	  Steps: 
+	    1. boil eggs for 6.5 min
+	    2. cool eggs in ice bath
+	  Cuisine: Japanese
+	  Time taken: 15
 	__________________________________________________________________________________
 	__________________________________________________________________________________
 	Aww, I shall begrudgingly let go of this recipe:
@@ -101,16 +101,15 @@ Got it? Let's get back to cooking.
 	__________________________________________________________________________________
 	__________________________________________________________________________________
 	Here's everything in my collection so far:
-1.Recipe: grilled cheese sandwich
-  Ingredients: 
-    - eggs
-    - sandwich
-    - cheese
-    - butter
-  Steps: 
-    1. add butter to hot pan
-    2. etc
-	__________________________________________________________________________________
+	1. Recipe: grilled cheese sandwich
+	  Ingredients: 
+	    - eggs
+	    - sandwich
+	    - cheese
+	    - butter
+	  Steps: 
+	    1. add butter to hot pan
+	    2. etc
 	__________________________________________________________________________________
 	__________________________________________________________________________________
                  (\

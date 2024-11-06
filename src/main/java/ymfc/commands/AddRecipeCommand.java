@@ -43,6 +43,7 @@ public class AddRecipeCommand extends Command {
      * and notifying the user via the {@code Ui}.
      *
      * @param recipes The {@code RecipeList} to add the recipe to. Must not be {@code null}.
+     * @param ingredients The {@code IngredientList}. Unused in this command.
      * @param ui The {@code Ui} for user interaction. Used to notify the user about the added recipe.
      * @param storage The {@code Storage} for saving the updated {@code RecipeList} to persistent storage.
      * @throws IOException If an error occurs while saving the recipe list.
@@ -51,7 +52,27 @@ public class AddRecipeCommand extends Command {
         logger.log(Level.FINEST, "Executing AddRecipeCommand");
 
         assert recipes != null;
-        addNewRecipe(recipes, recipe, ui, storage);
+        if (isDuplicateRecipe(recipe.getName(), recipes)) {
+            ui.printDuplicateRecipe(recipe.getName());
+        } else {
+            addNewRecipe(recipes, recipe, ui, storage);
+        }
+    }
+
+    /**
+     * Checks if the new recipe is a duplicate (has same name) of an existing recipe.
+     *
+     * @param recipeName Name of the new recipe to add
+     * @param recipes The {@code RecipeList} to add the recipe to. Must not be {@code null}.
+     * @return True if the new recipe is a duplicate, else returns false
+     */
+    public boolean isDuplicateRecipe(String recipeName, RecipeList recipes) {
+        for (int i = 0; i < recipes.getCounter(); i++) {
+            if (recipes.getRecipe(i).getName().equals(recipeName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

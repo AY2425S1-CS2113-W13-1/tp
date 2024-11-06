@@ -10,7 +10,7 @@ skinparam {
     SequenceGroupBackgroundColor COLOR_LIGHTRED
 }
 
-box Saving Recipes COLOR_PURPLE_BLUE
+box Saving Recipes COLOR_PALE_PINK
 participant ":Storage" as Storage
 participant ":File" as File
 participant ":FileWriter" as FileWriter
@@ -24,7 +24,7 @@ activate Storage
 create File
 Storage -> File : File("./data")
 activate File
-File --> Storage : :dir
+File --> Storage : dir:File
 deactivate File
 
 opt COLOR_GREEN !dir.isDirectory()
@@ -37,13 +37,13 @@ end
 create FileWriter
 Storage -> FileWriter : FileWriter(saveRecipeFilePath)
 activate FileWriter
-FileWriter --> Storage : :writer
+FileWriter --> Storage : writer:FileWriter
 deactivate FileWriter
 
 loop COLOR_GREEN number of recipes
     Storage -> RecipeList : getRecipe(i)
     activate RecipeList
-    RecipeList --> Storage : :recipe
+    RecipeList --> Storage : recipe:Recipe
     deactivate RecipeList
 
     Storage -> Recipe : toSaveString()
@@ -66,5 +66,6 @@ destroy File
 destroy FileWriter
 
 Storage -->[
+deactivate Storage
 
 @enduml

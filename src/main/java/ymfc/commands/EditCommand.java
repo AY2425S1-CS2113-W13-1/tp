@@ -39,11 +39,12 @@ public class EditCommand extends Command {
     }
 
     /**
-     * Executes the {@code EditCommand}, removing the recipe with the specified name
-     * from the {@code RecipeList}. If the recipe is found and removed, the updated list is saved to storage
-     * and a confirmation message is displayed.
+     * Executes the {@code EditCommand}, finding a recipe matching the name inputted by the user
+     * and then editing it based on the new parameters inputted. If the recipe of the specified name
+     * is found and then editted, the {@code Storage} is updated and a confirmation message is displayed.
      *
      * @param recipes The {@code RecipeList} to edit the recipe from. Must not be {@code null}.
+     * @param ingredients The {@code IngredientList}. Unused in this command.
      * @param ui The {@code Ui} to inform the user of the edited recipe or error.
      * @param storage The {@code Storage} to save the updated recipe list.
      * @throws InvalidArgumentException If the recipe with the specified name is not found in the list.
@@ -63,5 +64,7 @@ public class EditCommand extends Command {
         } catch (IOException exception) {
             System.out.println(exception.getMessage());
         }
+
+        ui.printEditedRecipe(recipeName, recipe);
     }
 }

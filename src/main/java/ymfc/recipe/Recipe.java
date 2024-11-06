@@ -1,18 +1,20 @@
 package ymfc.recipe;
 
+import ymfc.ingredient.Ingredient;
+
 import java.util.ArrayList;
 
 public class Recipe {
 
-    public String name;
-    public ArrayList<String> ingredients;
-    public ArrayList<String> steps;
+    private String name;
+    private ArrayList<Ingredient> ingredients;
+    private ArrayList<String> steps;
 
     // Optional attributes
-    public String cuisine;
-    public Integer timeTaken;
+    private String cuisine;
+    private Integer timeTaken;
 
-    public Recipe(String name, ArrayList<String> ingredients, ArrayList<String> steps) {
+    public Recipe(String name, ArrayList<Ingredient> ingredients, ArrayList<String> steps) {
         this.name = name;
         this.ingredients = ingredients;
         this.steps = steps;
@@ -20,7 +22,7 @@ public class Recipe {
         this.timeTaken = null;
     }
 
-    public Recipe(String name, ArrayList<String> ingredients, ArrayList<String> steps,
+    public Recipe(String name, ArrayList<Ingredient> ingredients, ArrayList<String> steps,
                   String cuisine, Integer timeTaken) {
         this.name = name;
         this.ingredients = ingredients;
@@ -29,7 +31,7 @@ public class Recipe {
         this.timeTaken = timeTaken;
     }
 
-    public Recipe(String name, ArrayList<String> ingredients, ArrayList<String> steps, String cuisine) {
+    public Recipe(String name, ArrayList<Ingredient> ingredients, ArrayList<String> steps, String cuisine) {
         this.name = name;
         this.ingredients = ingredients;
         this.steps = steps;
@@ -37,7 +39,7 @@ public class Recipe {
         this.timeTaken = null;
     }
 
-    public Recipe(String name, ArrayList<String> ingredients, ArrayList<String> steps, Integer timeTaken) {
+    public Recipe(String name, ArrayList<Ingredient> ingredients, ArrayList<String> steps, Integer timeTaken) {
         this.name = name;
         this.ingredients = ingredients;
         this.steps = steps;
@@ -53,11 +55,11 @@ public class Recipe {
         this.name = name;
     }
 
-    public ArrayList<String> getIngredients() {
+    public ArrayList<Ingredient> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(ArrayList<String> ingredients) {
+    public void setIngredients(ArrayList<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
 
@@ -88,16 +90,26 @@ public class Recipe {
         this.timeTaken = timeTaken;
     }
 
-    public boolean equals(Recipe o) {
-        if (!name.equals(o.getName())) {
+    public boolean equals(Recipe recipeToCheck) {
+        if (!name.equals(recipeToCheck.getName())) {
             return false;
         }
 
-        if (!ingredients.equals(o.getIngredients())) {
+        ArrayList<Ingredient> otherIngredients = recipeToCheck.getIngredients();
+        if (ingredients.size() != otherIngredients.size()) {
             return false;
         }
 
-        if (!steps.equals(o.getSteps())) {
+        for (int i = 0; i < ingredients.size(); i++) {
+            Ingredient ingredient = ingredients.get(i);
+            Ingredient otherIngredient = otherIngredients.get(i);
+
+            if (!ingredient.equals(otherIngredient)) {
+                return false;
+            }
+        }
+
+        if (!steps.equals(recipeToCheck.getSteps())) {
             return false;
         }
 
@@ -109,32 +121,38 @@ public class Recipe {
         StringBuilder recipeDetails = new StringBuilder();
         recipeDetails.append("Recipe: ").append(name).append(System.lineSeparator());
 
-        recipeDetails.append("  Ingredients: ");
-        for (String ingredient : ingredients) {
-            recipeDetails.append(System.lineSeparator()).append("    - ").append(ingredient);
+        recipeDetails.append("\t" + "  Ingredients: ");
+        for (Ingredient ingredient : ingredients) {
+            recipeDetails.append(System.lineSeparator()).append("\t" + "    - ").append(ingredient);
         }
 
-        recipeDetails.append(System.lineSeparator()).append("  Steps: ");
+        recipeDetails.append(System.lineSeparator()).append("\t" + "  Steps: ");
         for (int i = 0; i < steps.size(); i++) {
-            recipeDetails.append(System.lineSeparator()).append("    ").append(i + 1).append(". ").append(steps.get(i));
+            recipeDetails.append(System.lineSeparator()).append("\t" + "    ")
+                    .append(i + 1).append(". ").append(steps.get(i));
         }
 
         if (cuisine != null) {
-            recipeDetails.append(System.lineSeparator()).append("  Cuisine: ").append(cuisine);
+            recipeDetails.append(System.lineSeparator()).append("\t" + "  Cuisine: ").append(cuisine);
         }
 
         if (timeTaken != null) {
-            recipeDetails.append(System.lineSeparator()).append("  Time taken: ").append(timeTaken);
+            recipeDetails.append(System.lineSeparator()).append("\t" + "  Time taken: ").append(timeTaken);
         }
 
         return recipeDetails.toString();
     }
 
+    /**
+     * Returns a string in the proper format to be written to the recipes.txt save file
+     *
+     * @return String to be written to the save file
+     */
     public String toSaveString() {
         StringBuilder recipeDetails = new StringBuilder();
         recipeDetails.append("add n/").append(name).append(" ");
 
-        for (String ingredient : ingredients) {
+        for (Ingredient ingredient : ingredients) {
             recipeDetails.append("i/").append(ingredient).append(" ");
         }
 

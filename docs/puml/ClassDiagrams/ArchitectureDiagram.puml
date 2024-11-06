@@ -1,0 +1,32 @@
+'@@author: seanngja
+@startuml
+skinparam dpi 150
+skinparam componentStyle rectangle
+
+actor User as user
+package "YMFC (Main) " {
+    [UI] #Green
+    [Parser] #LIGHTBLUE
+    [RecipeList] #Red
+    [IngredientList] #Brown
+    [Storage] #Yellow
+    [Recipe]
+    [Ingredient]
+    [Command] #Pink
+}
+
+database "Hard Disk" as hard_disk #LIGHTGREEN
+
+user --> UI
+UI --> Parser
+RecipeList ..> Recipe
+Command <-- Parser
+Command --> UI
+Command --> Storage
+Command --> RecipeList
+Command --> IngredientList
+Parser <-- Storage
+IngredientList ..> Ingredient
+Storage <--> hard_disk
+
+@enduml

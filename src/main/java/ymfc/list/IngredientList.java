@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class IngredientList {
-    ArrayList<Ingredient> ingredients = new ArrayList<>();
+    private ArrayList<Ingredient> ingredients = new ArrayList<>();
 
     public IngredientList() {
         this.ingredients = new ArrayList<>();
@@ -23,11 +23,6 @@ public class IngredientList {
     public Ingredient getIngredient(int id) {
         return ingredients.get(id);
     }
-
-    /*public void removeIngredient(int id) {
-        assert !ingredients.isEmpty() : "List should not be empty when deleting ingredient";
-        ingredients.remove(id);
-    }*/
 
     public boolean removeIngredientByName(String name) {
         assert !ingredients.isEmpty() : "List should not be empty when deleting ingredient";

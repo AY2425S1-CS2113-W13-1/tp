@@ -56,7 +56,11 @@ public class FindCommand extends Command {
                 )
                 .collect(Collectors.toCollection(ArrayList::new));
         numMatches = results.size();
-        ui.printFind(results, numMatches);
+        if (numMatches > 0) {
+            ui.printFind(results, numMatches);
+        } else {
+            ui.printEmptyFind();
+        }
         logger.log(Level.FINEST, "FindCommand successfully executed");
     }
 
@@ -67,7 +71,8 @@ public class FindCommand extends Command {
 
     private boolean isFoundInIngredients(Recipe recipe) {
         return isByIngredient &
-                recipe.getIngredients().stream().anyMatch(s -> s.contains(query));
+                recipe.getIngredients().stream()
+                        .anyMatch(ingredient -> ingredient.getName().contains(query));
     }
 
     private boolean isQueryFoundInName(Recipe recipe) {

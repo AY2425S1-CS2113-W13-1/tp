@@ -1,0 +1,85 @@
+@startuml
+!include Style.puml
+
+hide footbox
+skinparam guillemet false
+skinparam sequenceReferenceBackgroundColor COLOR_YELLOW
+skinparam sequenceReferenceHeaderBackgroundColor COLOR_RED
+skinparam ParticipantBackGroundColor COLOR_LIGHTBLUE
+skinparam {
+    SequenceGroupBackgroundColor COLOR_LIGHTRED
+}
+
+box Parser.parseCommand(String commandString, RecipeList recipes) COLOR_PALE_PINK
+participant "YMFC" as YMFC <<class>>
+participant "Parser" as Parser <<class>>
+participant "GENERIC_FORMAT:Pattern" as Pattern
+note over of Pattern
+	Static object within Parser class
+end note
+participant ":Matcher" as Matcher
+participant "recipes:RecipeList" as RecipeList
+end box
+
+YMFC -> Parser: parseCommand(String commandString, RecipeList recipes)
+activate Parser
+Parser -> Pattern: matcher(commandString)
+
+activate Pattern
+
+
+Pattern -> Matcher **: Matcher()
+activate Matcher
+
+return m:Matcher
+
+return m:Matcher
+
+Parser -> Matcher: matches()
+activate Matcher
+
+return isMatch: boolean
+
+
+opt COLOR_GREEN !isMatch
+	Parser ->> YMFC: throw new InvalidCommandException("Invalid command: " + commandString)
+end
+
+Parser -> Matcher: group("command")
+activate Matcher
+return command:String
+Parser -> Matcher: group("args")
+activate Matcher
+return args:String
+
+opt COLOR_GREEN args==null
+	Parser -> Parser: args = ""
+	activate Parser
+	deactivate Parser
+end
+
+Parser -> RecipeList: getCounter()
+activate RecipeList
+return numRecipes: int
+alt COLOR_GREEN command == "add" | "help" | "bye" | "new"
+	ref over Parser
+		private method getXYZCommand(args)
+	end ref
+	Parser --> YMFC: returns a newly instanced object of the appropriate command class
+
+else command == "delete" | "listR" | "listI" | "sort" | "edit" | "find"
+	opt COLOR_GREEN numRecipes <= 0 | numIngredients <= 0
+		Parser ->> YMFC: throw new EmptyListException("empty list message")
+		deactivate YMFC
+	end
+	ref over Parser
+		private method getXYZCommand(args)
+	end ref
+	Parser --> YMFC: returns a newly instanced object of the appropriate command class
+
+else default
+		Parser ->> YMFC: throw new InvalidCommandException("Invalid command: " + command + "\\ntype \"help\" for assistance");
+end
+deactivate Parser
+
+@enduml

@@ -1,0 +1,106 @@
+@startuml
+skinparam classAttributeIconSize 0
+!define ABSTRACT &#123;abstract&#125;
+!define COMMAND "{abstract}\nCommand"
+
+class COMMAND {
+    # isBye: boolean
+    __
+    + Command()
+    + setBye(): void
+    + isBye(): boolean
+    + execute(recipes: RecipeList, ingredients: IngredientList, ui: Ui, storage: Storage): void ABSTRACT
+}
+hide COMMAND circle
+
+class AddRecipeCommand {
+    - recipe: Recipe
+    __
+    + AddRecipeCommand(recipe: Recipe)
+}
+hide AddRecipeCommand circle
+
+class AddIngredientCommand {
+    - ingredient: Ingredient
+    __
+    + AddIngredientCommand(ingredient: Ingredient)
+}
+hide AddIngredientCommand circle
+
+class ByeCommand {
+    __
+    + ByeCommand()
+}
+hide ByeCommand circle
+
+class DeleteCommand {
+    - recipeName: String
+    --
+    + DeleteCommand(recipeName: String)
+}
+hide DeleteCommand circle
+
+class EditCommand {
+    - recipe: Recipe
+    --
+    + EditCommand(recipe: Recipe)
+}
+hide EditCommand circle
+
+class FindCommand {
+    - query: String
+    - isByName: boolean = true
+    - isByIngredient: boolean = false
+    - isByStep: boolean = false
+    - numMatches: int = 0
+    __
+    + FindCommand(query: String)
+}
+hide FindCommand circle
+
+class FindIngredCommand {
+    - query: String
+    - numMatches: int = 0
+    __
+    + FindIngredCommand(query: String)
+}
+hide FindIngredCommand circle
+
+class HelpCommand {
+    __
+    + HelpCommand()
+}
+hide HelpCommand circle
+
+class ListCommand {
+    __
+    + ListCommand()
+}
+hide ListCommand circle
+
+class ListIngredientsCommand {
+    __
+    + ListIngredientsCommand()
+}
+hide ListIngredientsCommand circle
+
+class SortCommand {
+    - listBy: String
+    __
+    + SortCommand(listBy: String)
+}
+hide SortCommand circle
+
+AddRecipeCommand --d|> COMMAND
+AddIngredientCommand --d|> COMMAND
+ByeCommand --d|> COMMAND
+DeleteCommand --u|> COMMAND
+EditCommand --u|> COMMAND
+FindCommand --u|> COMMAND
+FindIngredCommand --u|> COMMAND
+HelpCommand --u|> COMMAND
+ListCommand --l|> COMMAND
+ListIngredientsCommand --r|> COMMAND
+SortCommand --d|> COMMAND
+
+@enduml

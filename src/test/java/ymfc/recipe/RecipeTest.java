@@ -3,6 +3,8 @@ package ymfc.recipe;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
+import ymfc.ingredient.Ingredient;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -24,9 +26,9 @@ class RecipeTest {
 
     @Test
     void getIngredients_validIngredients_returnCorrectIngredients() {
-        ArrayList<String> ingredients = new ArrayList<>();
-        ingredients.add("Tomato");
-        ingredients.add("Cheese");
+        ArrayList<Ingredient> ingredients = new ArrayList<>();
+        ingredients.add(new Ingredient("Tomato"));
+        ingredients.add(new Ingredient("Cheese"));
         Recipe recipe = new Recipe("Pasta", ingredients, new ArrayList<>());
         assertEquals(ingredients, recipe.getIngredients());
     }
@@ -34,9 +36,13 @@ class RecipeTest {
     @Test
     void setIngredients_validIngredients_ingredientsUpdatedCorrectly() {
         Recipe recipe = new Recipe("Pasta", new ArrayList<>(), new ArrayList<>());
-        ArrayList<String> newIngredients = new ArrayList<>();
-        newIngredients.add("Flour");
-        newIngredients.add("Water");
+        ArrayList<Ingredient> newIngredients = new ArrayList<>();
+
+        Ingredient flour = new Ingredient("Flour");
+        Ingredient water = new Ingredient("Water");
+        newIngredients.add(flour);
+        newIngredients.add(water);
+
         recipe.setIngredients(newIngredients);
         assertEquals(newIngredients, recipe.getIngredients());
     }
@@ -63,12 +69,12 @@ class RecipeTest {
     @Test
     void toString_validIngredientsAndSteps_correctFormat() {
 
-        ArrayList<String> ingredients = new ArrayList<>();
-        ingredients.add("Flour");
-        ingredients.add("Eggs");
-        ingredients.add("Milk");
-        ingredients.add("Sugar");
-        ingredients.add("Baking powder");
+        ArrayList<Ingredient> ingredients = new ArrayList<>();
+        ingredients.add(new Ingredient("Flour"));
+        ingredients.add(new Ingredient("Eggs"));
+        ingredients.add(new Ingredient("Milk"));
+        ingredients.add(new Ingredient("Sugar"));
+        ingredients.add(new Ingredient("Baking powder"));
 
         ArrayList<String> steps = new ArrayList<>();
         steps.add("Mix ingredients");
@@ -81,18 +87,18 @@ class RecipeTest {
 
         // Expected string representation
         String expected = "Recipe: Pancakes" + System.lineSeparator() +
-                "  Ingredients: " + System.lineSeparator() +
-                "    - Flour" + System.lineSeparator() +
-                "    - Eggs" + System.lineSeparator() +
-                "    - Milk" + System.lineSeparator() +
-                "    - Sugar" + System.lineSeparator() +
-                "    - Baking powder" + System.lineSeparator() +
-                "  Steps: " + System.lineSeparator() +
-                "    1. Mix ingredients" + System.lineSeparator() +
-                "    2. Heat the pan" + System.lineSeparator() +
-                "    3. Pour batter" + System.lineSeparator() +
-                "    4. Flip the pancake" + System.lineSeparator() +
-                "    5. Serve hot";
+                "\t" + "  Ingredients: " + System.lineSeparator() +
+                "\t" + "    - Flour" + System.lineSeparator() +
+                "\t" + "    - Eggs" + System.lineSeparator() +
+                "\t" + "    - Milk" + System.lineSeparator() +
+                "\t" + "    - Sugar" + System.lineSeparator() +
+                "\t" + "    - Baking powder" + System.lineSeparator() +
+                "\t" + "  Steps: " + System.lineSeparator() +
+                "\t" + "    1. Mix ingredients" + System.lineSeparator() +
+                "\t" + "    2. Heat the pan" + System.lineSeparator() +
+                "\t" + "    3. Pour batter" + System.lineSeparator() +
+                "\t" + "    4. Flip the pancake" + System.lineSeparator() +
+                "\t" + "    5. Serve hot";
 
         // Assert the output of toString method matches expected
         assertEquals(expected, recipe.toString());
@@ -122,8 +128,8 @@ class RecipeTest {
 
     @Test
     void equals_isSameRecipe_returnsTrue() {
-        ArrayList<String> ingredients = new ArrayList<>();
-        ingredients.add("Flour");
+        ArrayList<Ingredient> ingredients = new ArrayList<>();
+        ingredients.add(new Ingredient("Flour"));
 
         ArrayList<String> steps = new ArrayList<>();
         steps.add("Bake");
@@ -136,10 +142,10 @@ class RecipeTest {
 
     @Test
     void equals_isNotSameRecipe_returnsFalse() {
-        ArrayList<String> ingredients1 = new ArrayList<>();
-        ingredients1.add("Flour");
-        ArrayList<String> ingredients2 = new ArrayList<>();
-        ingredients2.add("Rice");
+        ArrayList<Ingredient> ingredients1 = new ArrayList<>();
+        ingredients1.add(new Ingredient("Flour"));
+        ArrayList<Ingredient> ingredients2 = new ArrayList<>();
+        ingredients2.add(new Ingredient("Rice"));
 
         ArrayList<String> steps1 = new ArrayList<>();
         steps1.add("Bake");

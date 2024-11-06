@@ -1,0 +1,33 @@
+@startuml
+!include Style.puml
+
+skinparam classAttributeIconSize 0
+left to right direction
+
+
+class Ingredient #COLOR_RED{
+    - name: String
+    __
+    + Ingredient(name: String)
+    + getName(): String
+    + equals(ingredientToCheck: Ingredient): boolean
+    + toString(): String
+    + toSaveString(): String
+}
+hide Ingredient circle
+
+class IngredientList #COLOR_PURPLE_BLUE{
+    __
+    + IngredientList()
+    + addIngredient(ingredient: Ingredient): void
+    + getIngredients(): ArrayList<Ingredient>
+    + getIngredient(id: int): Ingredient
+    + removeIngredientByName(name: String): boolean
+    + getCounter(): int
+    + sortAlphabetically(): void
+}
+hide IngredientList circle
+
+IngredientList "1 " o--- "ingredients * " Ingredient: contains >
+
+@enduml

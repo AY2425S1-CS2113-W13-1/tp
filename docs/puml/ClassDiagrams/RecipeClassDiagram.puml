@@ -1,0 +1,47 @@
+@startuml
+!include Style.puml
+
+skinparam classAttributeIconSize 0
+left to right direction
+
+
+class Recipe #COLOR_RED{
+    - name: String
+    - ingredients: String[]
+    - steps: String[]
+    - cuisine: String = null
+    - timeTaken: Integer = null
+    __
+    + Recipe(name: String, ingredients: String[], steps: String[])
+    + Recipe(name: String, ingredients: String[], steps: String[], cuisine: String, timeTaken: Integer)
+    + Recipe(name: String, ingredients: String[], steps: String[], cuisine: String)
+    + Recipe(name: String, ingredients: String[], steps: String[]. timeTaken: Integer)
+    + getTimeTaken(): Integer
+    + setTimeTaken(timeTaken: Integer): void
+    + equals(recipeToCheck: Recipe): boolean
+    + toString(): String
+    + toSaveString(): String
+}
+hide Recipe circle
+
+
+class RecipeList #COLOR_PURPLE_BLUE{
+    - counter: int = 0
+    __
+    + RecipeList()
+    + addRecipe(recipe: Recipe): void
+    + getRecipes(): Recipe[]
+    + getRecipe(id: int): Recipe
+    + removeRecipe(id: int): void
+    + removeRecipeByName(name: String): boolean
+    + editRecipe(name: String, editedRecipe: Recipe): boolean
+    + getCounter(): int
+    + sortAlphabetically(): void
+    + sortByTimeTaken(): void
+}
+hide RecipeList circle
+
+
+RecipeList "1 " o---- "recipes * " Recipe: contains >
+
+@enduml

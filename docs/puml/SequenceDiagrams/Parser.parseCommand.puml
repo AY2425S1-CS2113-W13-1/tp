@@ -1,0 +1,133 @@
+@startuml
+!include Style.puml
+
+hide footbox
+skinparam guillemet false
+skinparam sequenceReferenceBackgroundColor COLOR_YELLOW
+skinparam sequenceReferenceHeaderBackgroundColor COLOR_RED
+skinparam ParticipantBackGroundColor COLOR_LIGHTBLUE
+skinparam {
+    SequenceGroupBackgroundColor COLOR_LIGHTRED
+}
+
+box Parser.parseCommand(String commandString, RecipeList recipes) COLOR_PALE_PINK
+participant "YMFC" as YMFC <<class>>
+participant "Parser" as Parser <<class>>
+participant "GENERIC_FORMAT:Pattern" as Pattern
+note over of Pattern
+	Static object within Parser class
+end note
+participant ":Matcher" as Matcher
+participant "recipes:RecipeList" as RecipeList
+end box
+
+YMFC -> Parser: parseCommand(String commandString, RecipeList recipes)
+activate Parser
+Parser -> Pattern: matcher(commandString)
+
+activate Pattern
+
+
+Pattern -> Matcher **: Matcher()
+activate Matcher
+
+return m:Matcher
+
+return m:Matcher
+
+Parser -> Matcher: matches()
+activate Matcher
+
+return isMatch: boolean
+
+
+opt COLOR_GREEN !isMatch
+	Parser ->> YMFC: throw new InvalidCommandException("Invalid command: " + commandString)
+end
+
+Parser -> Matcher: group("command")
+activate Matcher
+return command:String
+Parser -> Matcher: group("args")
+activate Matcher
+return args:String
+
+opt COLOR_GREEN args==null
+	Parser -> Parser: args = ""
+	activate Parser
+	deactivate Parser
+end
+
+Parser -> RecipeList: getCounter()
+activate RecipeList
+return numRecipes: int
+alt COLOR_GREEN command == "add"
+	ref over Parser
+		private method getAddRecipeCommand(args)
+	end ref
+	Parser --> YMFC: :AddCommand
+else command == "delete"
+	opt COLOR_GREEN numRecipes <= 0
+		Parser ->> YMFC: throw new EmptyListException("You can't remove something from nothing!")
+		deactivate YMFC
+	end
+	ref over Parser
+		private method getDeleteCommand(args)
+	end ref
+	Parser --> YMFC: :DeleteCommand
+else command == "listR"
+	opt COLOR_GREEN numRecipes <= 0
+		Parser ->> YMFC: throw new EmptyListException("Your recipe list is empty!")
+	end
+	ref over Parser
+		ListCommand() constructor
+	end ref
+	Parser --> YMFC: :ListCommand
+else command == "listI"
+	ref over Parser
+		ListIngredientsCommand() constructor
+	end ref
+	Parser --> YMFC: :ListIngredientsCommand
+else command == "help"
+	ref over Parser
+		HelpCommand() constructor
+	end ref
+	Parser --> YMFC: :HelpCommand
+else command == "bye"
+	ref over Parser
+		ByeCommand() constructor
+	end ref
+	Parser --> YMFC: :ByeCommand
+else command == "sort"
+	opt COLOR_GREEN numRecipes <= 0
+		Parser ->> YMFC: throw new EmptyListException("There is nothing to sort!")
+	end
+	ref over Parser
+		private method getSortCommand(args)
+	end ref
+else command == "new"
+	ref over Parser
+		private method getAddIngredientCommand(args);
+	end ref
+	Parser --> YMFC: :AddIngredientCommand
+else command == "edit"
+	opt COLOR_GREEN numRecipes <= 0
+		Parser ->> YMFC: throw new EmptyListException("There is nothing to edit!");
+	end
+	ref over Parser
+		private method getEditCommand(args)
+	end ref
+	Parser --> YMFC: :EditCommand
+else command == "find"
+	opt COLOR_GREEN numRecipes <= 0
+		Parser ->> YMFC: throw new EmptyListException("There is nothing to find!");
+	end
+	ref over Parser
+		private method getFindCommand(args)
+	end ref
+	Parser --> YMFC: :FindCommand
+else default
+		Parser ->> YMFC: throw new InvalidCommandException("Invalid command: " + command + "\\ntype \"help\" for assistance");
+end
+deactivate Parser
+@enduml

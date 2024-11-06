@@ -1,0 +1,92 @@
+@startuml
+!include Style.puml
+
+hide footbox
+skinparam guillemet false
+skinparam sequenceReferenceBackgroundColor COLOR_YELLOW
+skinparam sequenceReferenceHeaderBackgroundColor COLOR_RED
+skinparam ParticipantBackGroundColor COLOR_LIGHTBLUE
+skinparam {
+    SequenceGroupBackgroundColor COLOR_LIGHTRED
+}
+
+box Editing Recipes COLOR_PALE_PINK
+participant "YMFC" as YMFC <<class>>
+participant "Parser" as Parser <<class>>
+participant ":EditCommand" as EditCommand
+participant ":Storage" as Storage
+participant ":RecipeList" as RecipeList
+participant ":Storage" as Storage
+participant ":UI" as UI
+participant ":Recipe" as Recipe
+end box
+
+YMFC -> Parser : parseCommand(...)
+activate Parser
+
+Parser -> Parser : getEditCommand(args)
+activate Parser
+
+create Recipe
+Parser -> Recipe : Recipe(name, ingreds, steps, cuisine, timeTaken)
+activate Recipe
+Recipe --> Parser : recipe:Recipe
+deactivate Recipe
+
+create EditCommand
+Parser -> EditCommand : EditCommand(...)
+activate EditCommand
+EditCommand --> Parser
+deactivate EditCommand
+
+
+Parser --> Parser : command:EditCommand
+deactivate Parser
+Parser --> YMFC : command:EditCommand
+deactivate Parser
+
+YMFC -> EditCommand : execute(recipeList, ingredientList, ui, storage)
+activate EditCommand
+EditCommand -> Recipe : getName()
+activate Recipe
+Recipe -> EditCommand : recipeName:String
+deactivate Recipe
+
+EditCommand -> RecipeList : editRecipe(recipeName, :Recipe)
+activate RecipeList
+ref over RecipeList
+    Find recipe going by name recipeName
+    Edit recipe found with :Recipe
+end ref
+RecipeList --> EditCommand
+deactivate RecipeList
+
+EditCommand -> Storage : saveRecipes(:RecipeList)
+activate Storage
+ref over Storage
+    Saves recipes in
+    RecipeList into
+    .txt file
+end ref
+Storage --> EditCommand
+deactivate Storage
+
+EditCommand -> UI : printEditedRecipe(recipeName, :Recipes)
+activate UI
+ref over UI
+    Print to the CLI
+    that a recipe
+    has been edited
+end ref
+UI --> EditCommand
+deactivate UI
+
+
+deactivate EditCommand
+EditCommand --> YMFC
+deactivate EditCommand
+
+destroy EditCommand
+
+
+@enduml

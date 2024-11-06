@@ -15,7 +15,7 @@ import static ymfc.YMFC.logger;
 public class FindIngredCommand extends Command {
     public static final String USAGE_EXAMPLE = """
             Use example:
-            \t findI spaghetti // Default: find by name                        
+            \t findI spaghetti // Default: find by name
             
             """;
 
@@ -38,7 +38,11 @@ public class FindIngredCommand extends Command {
                 )
                 .collect(Collectors.toCollection(ArrayList::new));
         numMatches = results.size();
-        ui.printFindIngred(results, numMatches);
+        if (numMatches > 0) {
+            ui.printFindIngred(results, numMatches);
+        } else {
+            ui.printEmptyFindIngred();
+        }
         logger.log(Level.FINEST, "FindIngredCommand successfully executed");
     }
 

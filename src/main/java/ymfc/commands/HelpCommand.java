@@ -11,12 +11,12 @@ import static ymfc.YMFC.logger;
 
 /**
  * Represents the command to display help information to the user.
- * When executed, the {@code HelpCommand} provides a list of available commands and instructions
- * on how to use them, which is displayed via the {@code Ui}.
+ * When executed, the HelpCommand provides a list of available commands and instructions
+ * on how to use them, which is displayed via the Ui.
  */
 public class HelpCommand extends Command {
     /**
-     * Constructs a {@code HelpCommand} that provides the user with instructions and help.
+     * Constructs a HelpCommand that provides the user with instructions and help.
      */
     public HelpCommand() {
         super();
@@ -26,11 +26,12 @@ public class HelpCommand extends Command {
     }
 
     /**
-     * Executes the {@code HelpCommand}, which displays help information to the user.
+     * Executes the HelpCommand, which displays help information to the user.
      *
-     * @param recipes The {@code RecipeList}, not used in this method.
-     * @param ui The {@code Ui} used to display the help information to the user.
-     * @param storage The {@code Storage}, not used in this method.
+     * @param recipes The RecipeList, not used in this method.
+     * @param ingredients The IngredientList. Unused in this command.
+     * @param ui The Ui used to display the help information to the user.
+     * @param storage The Storage, not used in this method.
      */
     public void execute(RecipeList recipes, IngredientList ingredients, Ui ui, Storage storage) {
         logger.log(Level.FINEST, "Executing HelpCommand");

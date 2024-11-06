@@ -10,7 +10,7 @@ skinparam {
     SequenceGroupBackgroundColor COLOR_LIGHTRED
 }
 
-box Loading Saved Recipes COLOR_PURPLE_BLUE
+box Loading Saved Recipes COLOR_PALE_PINK
 participant "YMFC" as YMFC <<class>>
 participant ":Storage" as Storage
 participant ":File" as File
@@ -23,7 +23,7 @@ end box
 create Storage
 YMFC -> Storage : Storage()
 activate Storage
-Storage --> YMFC : :storage
+Storage --> YMFC : storage:Storage
 deactivate Storage
 
 YMFC -> Storage : loadRecipes(recipes, ...)
@@ -32,24 +32,24 @@ activate Storage
 create File
 Storage -> File : File(saveRecipePath)
 activate File
-File --> Storage : :tasksFile
+File --> Storage : saveFile:File
 deactivate File
 
 create Scanner
 Storage -> Scanner : Scanner(tasksFile)
 activate Scanner
-Scanner --> Storage : :reader
+Scanner --> Storage : reader:Scanner
 deactivate Scanner
 
 loop COLOR_GREEN until reader.hasNext() == false
     Storage -> Scanner : nextLine()
     activate Scanner
-    Scanner --> Storage : line
+    Scanner --> Storage : line:String
     deactivate Scanner
 
     Storage -> Storage : addRecipe(recipes, line)
     activate Storage
-    Storage -> Parser : parseCommand(line)
+    Storage -> Parser : parseCommand(line, ...)
     activate Parser
     ref over Parser
         Read in recipe
@@ -59,10 +59,10 @@ loop COLOR_GREEN until reader.hasNext() == false
     create AddRecipeCommand
     Parser -> AddRecipeCommand : AddRecipeCommand(..)
     activate AddRecipeCommand
-    AddRecipeCommand --> Parser : :command
+    AddRecipeCommand --> Parser : command:AddRecipeCommand
     deactivate AddRecipeCommand
 
-    Parser --> Storage : :command
+    Parser --> Storage : command:AddRecipeCommand
     deactivate Parser
 
     Storage -> AddRecipeCommand : addLoadedRecipe(recipes)
@@ -86,7 +86,7 @@ destroy Scanner
 create ListCommand
 Storage -> ListCommand : ListCommand()
 activate ListCommand
-ListCommand --> Storage : :lister
+ListCommand --> Storage : lister:ListIngredientsCommand
 deactivate ListCommand
 
 Storage -> ListCommand : execute(recipes, ...)

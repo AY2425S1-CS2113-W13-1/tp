@@ -1,6 +1,7 @@
 package ymfc.commands;
 
 import ymfc.exception.InvalidArgumentException;
+import ymfc.ingredient.Ingredient;
 import ymfc.list.IngredientList;
 import ymfc.recipe.Recipe;
 import ymfc.list.RecipeList;
@@ -28,10 +29,10 @@ public class DeleteCommandTest {
         storage = new Storage();
 
         // Add some sample recipes
-        ArrayList<String> pastaIngredients = new ArrayList<>();
-        pastaIngredients.add("Pasta");
-        pastaIngredients.add("Water");
-        pastaIngredients.add("Salt");
+        ArrayList<Ingredient> pastaIngredients = new ArrayList<>();
+        pastaIngredients.add(new Ingredient("Pasta"));
+        pastaIngredients.add(new Ingredient("Water"));
+        pastaIngredients.add(new Ingredient("Salt"));
 
         ArrayList<String> pastaSteps = new ArrayList<>();
         pastaSteps.add("Boil water.");
@@ -40,10 +41,10 @@ public class DeleteCommandTest {
 
         Recipe pastaRecipe = new Recipe("Pasta", pastaIngredients, pastaSteps);
 
-        ArrayList<String> saladIngredients = new ArrayList<>();
-        saladIngredients.add("Lettuce");
-        saladIngredients.add("Tomatoes");
-        saladIngredients.add("Cucumber");
+        ArrayList<Ingredient> saladIngredients = new ArrayList<>();
+        saladIngredients.add(new Ingredient("Lettuce"));
+        saladIngredients.add(new Ingredient("Tomatoes"));
+        saladIngredients.add(new Ingredient("Cucumber"));
 
         ArrayList<String> saladSteps = new ArrayList<>();
         saladSteps.add("Chop veggies.");

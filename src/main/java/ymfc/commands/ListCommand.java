@@ -10,14 +10,14 @@ import java.util.logging.Level;
 import static ymfc.YMFC.logger;
 
 /**
- * Represents the command to list all the recipes in the {@code RecipeList}.
- * When executed, the {@code ListCommand} retrieves and displays the list of recipes
- * to the user via the {@code Ui}.
+ * Represents the command to list all the recipes in the RecipeList.
+ * When executed, the ListCommand retrieves and displays the list of recipes
+ * to the user via the Ui.
  */
 public class ListCommand extends Command {
 
     /**
-     * Constructs a {@code ListCommand} to display the current list of recipes.
+     * Constructs a ListCommand to display the current list of recipes.
      */
     public ListCommand() {
         super();
@@ -26,12 +26,13 @@ public class ListCommand extends Command {
     }
 
     /**
-     * Executes the {@code ListCommand}, which prints the entire list of recipes
-     * along with the number of recipes in the list using the {@code Ui}.
+     * Executes the ListCommand, which prints the entire list of recipes
+     * along with the number of recipes in the list using the Ui.
      *
-     * @param recipes The {@code RecipeList} containing all the recipes.
-     * @param ui The {@code Ui} used to display the list of recipes.
-     * @param storage The {@code Storage}, not used in this method.
+     * @param recipes The RecipeList containing all the recipes.
+     * @param ingredients The IngredientList. Unused in this command.
+     * @param ui The Ui used to display the list of recipes.
+     * @param storage The Storage, not used in this method.
      */
     public void execute(RecipeList recipes, IngredientList ingredients, Ui ui, Storage storage) {
         logger.log(Level.FINEST, "Executing ListCommand");

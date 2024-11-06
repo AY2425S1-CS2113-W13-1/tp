@@ -1,5 +1,6 @@
 package ymfc.commands;
 
+import ymfc.ingredient.Ingredient;
 import ymfc.list.IngredientList;
 import ymfc.recipe.Recipe;
 import ymfc.list.RecipeList;
@@ -30,10 +31,10 @@ public class AddRecipeCommandTest {
         storage = new Storage();
 
         // Sample ingredients and steps
-        ArrayList<String> ingredients = new ArrayList<>();
-        ingredients.add("Pasta");
-        ingredients.add("Water");
-        ingredients.add("Salt");
+        ArrayList<Ingredient> ingredients = new ArrayList<>();
+        ingredients.add(new Ingredient("Pasta"));
+        ingredients.add(new Ingredient("Water"));
+        ingredients.add(new Ingredient("Salt"));
 
         ArrayList<String> steps = new ArrayList<>();
         steps.add("Boil water.");

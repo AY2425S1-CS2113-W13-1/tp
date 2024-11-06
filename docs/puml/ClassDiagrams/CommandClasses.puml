@@ -1,0 +1,125 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "ymfc.commands" {
+
+    abstract class Command {
+        # isBye: boolean
+        __
+        + Command()
+        + setBye(): void
+        + isBye(): boolean
+        + {abstract} execute(recipes: RecipeList, ingredients: IngredientList, ui: Ui, storage: Storage): void
+    }
+    hide Command circle
+
+    class AddRecipeCommand {
+        - recipe: Recipe
+        + {static} USAGE_EXAMPLE: String
+        __
+        + AddRecipeCommand(recipe: Recipe)
+        + addNewRecipe(recipes: RecipeList, newRecipe: Recipe, ui: Ui, storage: Storage): void
+        + addLoadedRecipe(recipes: RecipeList): void
+    }
+    hide AddRecipeCommand circle
+
+    class AddIngredientCommand {
+        - ingredient: Ingredient
+        + {static} USAGE_EXAMPLE: String
+        __
+        + AddIngredientCommand(ingredient: Ingredient)
+        + addNewIngredient(ingredients: IngredientList, newIngredient: Ingredient, ui: Ui, storage: Storage): void
+        + addLoadedIngredient(ingredients: List): void
+    }
+    hide AddIngredientCommand circle
+
+    class ByeCommand {
+        __
+        + ByeCommand()
+    }
+    hide ByeCommand circle
+
+    class DeleteCommand {
+        - recipeName: String
+        + {static} USAGE_EXAMPLE: String
+        --
+        + DeleteCommand(recipeName: String)
+    }
+    hide DeleteCommand circle
+
+    class EditCommand {
+        - recipe: Recipe
+        + {static} USAGE_EXAMPLE: String
+        --
+        + EditCommand(recipe: Recipe)
+    }
+    hide EditCommand circle
+
+    class FindCommand {
+        - query: String
+        - isByName: boolean = true
+        - isByIngredient: boolean = false
+        - isByStep: boolean = false
+        - numMatches: int = 0
+        + {static} USAGE_EXAMPLE: String
+        __
+        + FindCommand(query: String)
+        + getNumMatches(): int
+        - isFoundInSteps(recipe: Recipe): boolean
+        - isFoundInIngredients(recipe: Recipe): boolean
+        - isQueryFoundInName(recipe: Recipe): boolean
+    }
+    hide FindCommand circle
+
+    class FindIngredCommand {
+        - query: String
+        - numMatches: int = 0
+        + {static} USAGE_EXAMPLE: String
+        __
+        + FindIngredCommand(query: String)
+        + getNumMatches(): int
+        - isQueryFoundInName(recipe: Recipe): boolean
+    }
+    hide FindIngredCommand circle
+
+    class HelpCommand {
+        __
+        + HelpCommand()
+    }
+    hide HelpCommand circle
+
+    class ListCommand {
+        __
+        + ListCommand()
+    }
+    hide ListCommand circle
+
+    class ListIngredientsCommand {
+        __
+        + ListIngredientsCommand()
+    }
+    hide ListIngredientsCommand circle
+
+    class SortCommand {
+        - listBy: String
+        + {static} USAGE_EXAMPLE: String
+        __
+        + SortCommand(listBy: String)
+    }
+    hide SortCommand circle
+
+    AddRecipeCommand --d|> Command
+    AddIngredientCommand --d|> Command
+    ByeCommand --u|> Command
+    DeleteCommand --u|> Command
+    EditCommand --u|> Command
+    FindCommand --u|> Command
+    FindIngredCommand --u|> Command
+    HelpCommand --u|> Command
+    ListCommand --l|> Command
+    ListIngredientsCommand --r|> Command
+    SortCommand --d|> Command
+
+}
+
+@enduml

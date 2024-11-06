@@ -1,0 +1,84 @@
+@startuml
+!include Style.puml
+
+hide footbox
+skinparam guillemet false
+skinparam sequenceReferenceBackgroundColor COLOR_YELLOW
+skinparam sequenceReferenceHeaderBackgroundColor COLOR_RED
+skinparam ParticipantBackGroundColor COLOR_LIGHTBLUE
+skinparam {
+    SequenceGroupBackgroundColor COLOR_LIGHTRED
+}
+
+box Adding Recipes COLOR_PALE_PINK
+participant "YMFC" as YMFC <<class>>
+participant "Parser" as Parser <<class>>
+participant ":AddRecipeCommand" as AddRecipeCommand
+participant ":Storage" as Storage
+participant ":RecipeList" as RecipeList
+participant ":Storage" as Storage
+participant ":UI" as UI
+end box
+
+YMFC -> Parser : parseCommand(...)
+activate Parser
+
+Parser -> Parser : getAddRecipeCommand(args)
+activate Parser
+
+create AddRecipeCommand
+Parser -> AddRecipeCommand : Recipe(name, ingreds, steps, cuisine, timeTaken)
+activate AddRecipeCommand
+AddRecipeCommand --> Parser
+deactivate AddRecipeCommand
+
+
+Parser --> Parser : command:AddRecipeCommand
+deactivate Parser
+Parser --> YMFC : command:AddRecipeCommand
+deactivate Parser
+
+YMFC -> AddRecipeCommand : execute(recipeList, ingredientList, ui, storage)
+activate AddRecipeCommand
+AddRecipeCommand -> AddRecipeCommand : addNewRecipe(recipes, recipe, ui, storage)
+activate AddRecipeCommand
+
+AddRecipeCommand -> RecipeList : addRecipe(newRecipe)
+activate RecipeList
+ref over RecipeList
+    Adds newRecipe
+    to RecipeList
+end ref
+RecipeList --> AddRecipeCommand
+deactivate RecipeList
+
+AddRecipeCommand -> Storage : saveRecipes(recipes)
+activate Storage
+ref over Storage
+    Saves recipes in
+    RecipeList into
+    .txt file
+end ref
+Storage --> AddRecipeCommand
+deactivate Storage
+
+AddRecipeCommand -> UI : printAddedRecipe(newRecipe.toString(), recipes.getCounter())
+activate UI
+ref over UI
+    Print to the CLI
+    that a new recipe
+    has been added
+end ref
+UI --> AddRecipeCommand
+deactivate UI
+
+AddRecipeCommand --> AddRecipeCommand
+
+deactivate AddRecipeCommand
+AddRecipeCommand --> YMFC
+deactivate AddRecipeCommand
+
+destroy AddRecipeCommand
+
+
+@enduml

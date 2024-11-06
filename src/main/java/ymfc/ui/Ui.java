@@ -2,6 +2,7 @@ package ymfc.ui;
 
 import ymfc.ingredient.Ingredient;
 import ymfc.recipe.Recipe;
+import ymfc.recipe.RecommendedRecipe;
 
 import java.io.InputStream;
 import java.util.Scanner;
@@ -50,7 +51,7 @@ public class Ui {
             + "\nThe following commands is for working with your ingredients list\n"
             + "1. new n/ingredient                  - Add a new ingredient to your list\n"
             + "2. listI                             - Lists out all your current ingredients\n"
-            //+ "3. delete n/ingredient                  - Delete an existing ingredient from your list\n"
+            + "3. findI ingredient                  - Looks for your ingredient in your ingredients list\n"
             + LINE
             + "\nGot it? Let's get back to cooking.\n";
 
@@ -60,7 +61,7 @@ public class Ui {
      * Constructor for a <code>YMFC.Ui</code> object.
      * Overloads default constructor to initialise a scanner object reading user inputs.
      *
-     * @param input InputStream for the Ui class to read commands from
+     * @param input InputStream for the Ui class to read commands from.
      */
     public Ui(InputStream input) {
         this.userInput = new Scanner(input);
@@ -93,7 +94,7 @@ public class Ui {
      * Return user input as a string when user hit enter key.
      * Users are re-prompted if they enter an empty command.
      *
-     * @return String representing what user typed into the program
+     * @return String representing what user typed into the program.
      */
     public String readCommand() {
         String commandRead = "";
@@ -104,19 +105,6 @@ public class Ui {
         return commandRead;
     }
 
-    /**
-     * Display a specified message.
-     *
-     * @param input String array representing the message, each element representing one line
-     */
-    public void printMessage(String[] input) {
-        System.out.println(LINE);
-        for (String line: input) {
-            System.out.println("\t" + line);
-        }
-        System.out.println(LINE);
-    }
-
     public void printErrorMessage(String error) {
         System.out.println(error);
     }
@@ -124,8 +112,8 @@ public class Ui {
     /**
      * Display a newly added recipe.
      *
-     * @param addedRecipe Recipe that has been added
-     * @param listCount Number of recipes currently in the list
+     * @param addedRecipe Recipe that has been added.
+     * @param listCount Number of recipes currently in the list.
      */
     public void printAddedRecipe(String addedRecipe, int listCount) {
         System.out.println(LINE);
@@ -140,8 +128,8 @@ public class Ui {
     /**
      * Display a newly added ingredient.
      *
-     * @param addedIngredient Ingredient that has been added
-     * @param listCount Number of ingredients currently in the list
+     * @param addedIngredient Ingredient that has been added.
+     * @param listCount Number of ingredients currently in the list.
      */
     public void printAddedIngredient(String addedIngredient, int listCount) {
         System.out.println(LINE);
@@ -156,28 +144,34 @@ public class Ui {
     /**
      * Display the entire list of recipe.
      *
-     * @param list ArrayList of recipes to be displayed
-     * @param listCount Integer representing total number of recipes in <code>list</code>
+     * @param list ArrayList of recipes to be displayed.
+     * @param listCount Integer representing total number of recipes in <code>list</code>.
      */
     public void printList(ArrayList<Recipe> list, int listCount) {
         System.out.println(LINE);
         System.out.println("\tHere's everything in my collection so far:");
         printListWithOrder(list, listCount);
-        System.out.println(LINE);
     }
 
     /**
-     * Display list of recipes with order of each recipe
-     * @param list ArrayList of recipes to be displayed
-     * @param listCount Integer representing total number of recipes in <code>list</code>
+     * Display list of recipes with order of each recipe.
+     *
+     * @param list ArrayList of recipes to be displayed.
+     * @param listCount Integer representing total number of recipes in <code>list</code>.
      */
     private void printListWithOrder(ArrayList<Recipe> list, int listCount) {
         for (int i = 0; i < listCount; i++) {
-            System.out.println((i + 1) + "." + list.get(i));
+            System.out.println("\t" + (i + 1) + ". " + list.get(i));
             System.out.println(LINE);
         }
     }
 
+    /**
+     * Display the entire list of ingredients.
+     *
+     * @param list ArrayList of ingredients to be displayed.
+     * @param listCount Integer representing total number of ingredients in <code>list</code>.
+     */
     public void printIngredientList(ArrayList<Ingredient> list, int listCount) {
         System.out.println(LINE);
         System.out.println("\tHere's all the ingredients you currently have: ");
@@ -190,8 +184,8 @@ public class Ui {
     /**
      * Display a recipe that been deleted.
      *
-     * @param deletedRecipe Recipe that has been deleted
-     * @param listCount Integer representing number of recipes in the list currently
+     * @param deletedRecipe Recipe that has been deleted.
+     * @param listCount Integer representing number of recipes in the list currently.
      */
     public void printDeletedTask(String deletedRecipe, int listCount) {
         System.out.println(LINE);
@@ -203,12 +197,32 @@ public class Ui {
         System.out.println(LINE);
     }
 
+    /**
+     * Display the list of available commands.
+     */
     public void printHelp() {
         System.out.println(LINE);
         System.out.println(listOfCommands);
         System.out.println(LINE);
     }
 
+    /**
+     * Alert user that the recipe being added already exists.
+     *
+     * @param duplicateName Name of the duplicate recipe.
+     */
+    public void printDuplicateRecipe(String duplicateName){
+        System.out.println(LINE);
+        System.out.println("\tThere already exists a recipe called: " + duplicateName + " !");
+        System.out.println(LINE);
+    }
+
+    /**
+     * Display list of recipes that match the user's parameters.
+     *
+     * @param list ArrayList of recipes to be displayed.
+     * @param listCount Integer representing total number of recipes in <code>list</code>.
+     */
     public void printFind(ArrayList<Recipe> list, int listCount) {
         System.out.println(LINE);
         System.out.println("\tHere's everything that I've found so far:");
@@ -217,6 +231,22 @@ public class Ui {
         System.out.println(LINE);
     }
 
+    /**
+     * Custom message when no recipe is found with FindCommand
+     */
+    public void printEmptyFind() {
+        System.out.println(LINE);
+        System.out.println("\tSorry I didn't find anything! :(");
+        System.out.println("\tPerhaps you should ask your mom for more recipes and add them here!");
+        System.out.println(LINE);
+    }
+
+    /**
+     * Display list of ingredients that match the user's parameters.
+     *
+     * @param list ArrayList of ingredients to be displayed.
+     * @param listCount Integer representing total number of ingredients in <code>list</code>.
+     */
     public void printFindIngred(ArrayList<Ingredient> list, int listCount) {
         System.out.println(LINE);
         System.out.println("\tHere's everything that I've found so far:");
@@ -225,9 +255,82 @@ public class Ui {
         System.out.println(LINE);
     }
 
+    /**
+     * Custom message when no ingredient is found with FindIngredCommand
+     */
+    public void printEmptyFindIngred() {
+        System.out.println(LINE);
+        System.out.println("\tSorry I didn't find anything! :(");
+        System.out.println("\tNow go fill your fridge and come back anytime!");
+        System.out.println(LINE);
+    }
+
+    /**
+     * Display list of inrgedients with order of each ingredient.
+     *
+     * @param list ArrayList of ingredients to be displayed.
+     * @param listCount Integer representing total number of ingredients in <code>list</code>.
+     */
     private void printIngredListWithOrder(ArrayList<Ingredient> list, int listCount) {
         for (int i = 0; i < listCount; i++) {
             System.out.println("\t" + (i + 1) + ". " + list.get(i));
+        }
+    }
+
+    /**
+     * Display an edited recipe.
+     *
+     * @param recipeName Name of recipe that has been edited.
+     * @param editedRecipe Recipe that has been edited.
+     */
+    public void printEditedRecipe(String recipeName, Recipe editedRecipe) {
+        System.out.println(LINE);
+        System.out.println("\tYou got it boss, I have edited your recipe for " + recipeName + " to:");
+        System.out.println("\t" +  editedRecipe);
+        System.out.println(LINE);
+    }
+
+    /**
+     * Display a random recipe.
+     *
+     * @param randomRecipe Recipe that has been randomly chosen.
+     */
+    public void printRandomRecipe(Recipe randomRecipe) {
+        System.out.println(LINE);
+        System.out.println("\tYou want me to call you a random recipe?");
+        System.out.println("\t...");
+        System.out.println("\tYou need to call it. I can't call it for you.");
+        System.out.println("\tIt wouldn't be fair. It wouldn't be right.");
+        System.out.println("\tIt's either one or another, and you have to say. Call it.");
+        System.out.println("\t...");
+        System.out.println("\tOkay who am I kidding, this is still a country for old men.");
+        System.out.println("\tI will call it for you, here's your random recipe:");
+        System.out.println("\t" +  randomRecipe);
+        System.out.println(LINE);
+    }
+
+    /**
+     * Display a list of recommended recipes to the user.
+     * Information about what percentage of the recipe's ingredients that the user has,
+     * and what are the missing ingredients are also displayed.
+     *
+     * @param recommendList List of recipes to be recommended
+     */
+    public void printRecommendedRecipes(ArrayList<RecommendedRecipe> recommendList) {
+        if (!recommendList.isEmpty()) {
+            System.out.println(LINE);
+            System.out.println("\tAlright, here are my recommendations:");
+            for (int i = 0; i < recommendList.size(); i++) {
+                System.out.println(recommendList.get(i));
+            }
+            System.out.println(LINE);
+        } else {
+            System.out.println(LINE);
+            System.out.println("\tUnfortunately I can't recommend you any recipes, ");
+            System.out.println("\tbecause you lack the ingredients for any recipes in my database.");
+            System.out.println("\tPerhaps you should hit up the grocery store.");
+            System.out.println("\tIt will do you some good to go outside once in a while.");
+            System.out.println(LINE);
         }
     }
 

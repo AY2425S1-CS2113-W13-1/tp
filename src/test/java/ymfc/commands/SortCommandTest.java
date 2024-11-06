@@ -1,5 +1,6 @@
 package ymfc.commands;
 
+import ymfc.ingredient.Ingredient;
 import ymfc.list.IngredientList;
 import ymfc.list.RecipeList;
 import ymfc.storage.Storage;
@@ -32,10 +33,10 @@ public class SortCommandTest {
         storage = new Storage();
 
         // Add some sample recipes
-        ArrayList<String> pastaIngredients = new ArrayList<>();
-        pastaIngredients.add("Pasta");
-        pastaIngredients.add("Water");
-        pastaIngredients.add("Salt");
+        ArrayList<Ingredient> pastaIngredients = new ArrayList<>();
+        pastaIngredients.add(new Ingredient("Pasta"));
+        pastaIngredients.add(new Ingredient("Water"));
+        pastaIngredients.add(new Ingredient("Salt"));
         ArrayList<String> pastaSteps = new ArrayList<>();
         pastaSteps.add("Boil water.");
         pastaSteps.add("Add pasta.");
@@ -43,10 +44,10 @@ public class SortCommandTest {
 
         Recipe pastaRecipe = new Recipe("Pasta", pastaIngredients, pastaSteps, 2);
 
-        ArrayList<String> saladIngredients = new ArrayList<>();
-        saladIngredients.add("Lettuce");
-        saladIngredients.add("Tomatoes");
-        saladIngredients.add("Cucumber");
+        ArrayList<Ingredient> saladIngredients = new ArrayList<>();
+        saladIngredients.add(new Ingredient("Lettuce"));
+        saladIngredients.add(new Ingredient("Tomatoes"));
+        saladIngredients.add(new Ingredient("Cucumber"));
         ArrayList<String> saladSteps = new ArrayList<>();
         saladSteps.add("Chop veggies.");
         saladSteps.add("Add pasta.");
@@ -54,18 +55,18 @@ public class SortCommandTest {
 
         Recipe saladRecipe = new Recipe("salad", saladIngredients, saladSteps, 1);
 
-        ArrayList<String> zebraFishIngredients = new ArrayList<>();
-        zebraFishIngredients.add("Zebra Fish");
-        zebraFishIngredients.add("Oil");
+        ArrayList<Ingredient> zebraFishIngredients = new ArrayList<>();
+        zebraFishIngredients.add(new Ingredient("Zebra Fish"));
+        zebraFishIngredients.add(new Ingredient("Oil"));
         ArrayList<String> zebraFishSteps = new ArrayList<>();
         zebraFishSteps.add("Scale fish");
         zebraFishSteps.add("Fry Fish");
 
         Recipe zebraFishRecipe = new Recipe("Zebra Fish", zebraFishIngredients, zebraFishSteps, 4);
 
-        ArrayList<String> applePieIngredients = new ArrayList<>();
-        applePieIngredients.add("Apple");
-        applePieIngredients.add("Pie");
+        ArrayList<Ingredient> applePieIngredients = new ArrayList<>();
+        applePieIngredients.add(new Ingredient("Apple"));
+        applePieIngredients.add(new Ingredient("Pie"));
         ArrayList<String> applePieSteps = new ArrayList<>();
         applePieSteps.add("Chop apples.");
         applePieSteps.add("Put apples in pie.");

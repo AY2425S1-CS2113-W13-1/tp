@@ -27,10 +27,10 @@ class FindIngredCommandTest {
         ui = new Ui(System.in);
 
         // Add some sample recipes
-        ArrayList<String> pastaIngredients = new ArrayList<>();
-        pastaIngredients.add("Pasta");
-        pastaIngredients.add("Water");
-        pastaIngredients.add("Salt");
+        ArrayList<Ingredient> pastaIngredients = new ArrayList<>();
+        pastaIngredients.add(new Ingredient("Pasta"));
+        pastaIngredients.add(new Ingredient("Water"));
+        pastaIngredients.add(new Ingredient("Salt"));
         ArrayList<String> pastaSteps = new ArrayList<>();
         pastaSteps.add("Boil water.");
         pastaSteps.add("Add pasta.");

@@ -1,5 +1,7 @@
+//@@author 3CCLY
 package ymfc.commands;
 
+import ymfc.ingredient.Ingredient;
 import ymfc.list.IngredientList;
 import ymfc.recipe.Recipe;
 import ymfc.list.RecipeList;
@@ -33,9 +35,9 @@ public class EditCommandTest {
         storage = new Storage();
 
         // Sample ingredients and steps
-        ArrayList<String> ingredients = new ArrayList<>();
-        ingredients.add("magi mee");
-        ingredients.add("water");
+        ArrayList<Ingredient> ingredients = new ArrayList<>();
+        ingredients.add(new Ingredient("magi mee"));
+        ingredients.add(new Ingredient("water"));
 
         ArrayList<String> steps = new ArrayList<>();
         steps.add("boil water");

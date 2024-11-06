@@ -1,5 +1,7 @@
+'@@author: seanngja
 @startuml
 !include Style.puml
+scale 1024*864
 
 hide footbox
 skinparam sequenceReferenceBackgroundColor COLOR_YELLOW
@@ -10,15 +12,16 @@ skinparam {
 }
 
 actor User
+box Start Up COLOR_PALE_PINK
 participant ":YMFC" as Main <<class>>
 participant ":Ui" as UI
 participant ":Storage" as S
 participant ":RecipeList" as RL
 participant ":IngredientList" as IL
 participant ":Parser" as P <<class>>
+end box
 
-
-User -> Main: Start application
+User -> Main: Start Application
 activate Main
 
 create UI
@@ -50,18 +53,20 @@ Load in ingredients and recipes
 from hard disk
 end ref
 
-loop COLOR_PURPLE_BLUE until command.isBye()
+loop COLOR_GREEN until command.isBye()
     ref over Main, P
     Receive user input and process command
     end ref
 end
+
+Main --> User: Close Application
+deactivate Main
 
 destroy S
 destroy UI
 destroy IL
 destroy RL
 destroy P
-
 
 
 @enduml
